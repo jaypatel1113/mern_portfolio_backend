@@ -22,7 +22,7 @@ export const login = async (req, res) => {
         // cretae cookie which expires in 10 min
         res.status(200)
             .cookie("token", token, {
-                expires: new Date(Date.now() + 10 * 60 + 1000),
+                expires: new Date(Date.now() + 10 * 60 * 1000),
                 httpOnly: true,
             })
             .json({ success: true, message: "Logged In Successfully" });
