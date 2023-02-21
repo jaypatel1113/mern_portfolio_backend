@@ -41,7 +41,8 @@ const userSchema =  new mongoose.Schema({
         {
             title: String,
             description: String,
-            date: Date,
+            startdate: Date,
+            enddate: Date,
         }
     ],
 
@@ -49,7 +50,8 @@ const userSchema =  new mongoose.Schema({
         {
             title: String,
             description: String,
-            date: Date,
+            startdate: Date,
+            enddate: Date,
         }
     ],
 

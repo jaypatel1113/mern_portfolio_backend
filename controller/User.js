@@ -22,7 +22,7 @@ export const login = async (req, res) => {
         // cretae cookie which expires in 10 min
         res.status(200)
             .cookie("token", token, {
-                expires: new Date(Date.now() + 10 * 60 * 1000),
+                expires: new Date(Date.now() + 60 * 60 * 1000 * 24 * 3),    //3day
                 httpOnly: true,
             })
             .json({ success: true, message: "Logged In Successfully" });
@@ -101,14 +101,30 @@ export const updateUser = async (req, res) => {
             user.password = password;
         }
         if (about) {
-            user.about.fullName = about.fullName;
-            user.about.dob = about.dob;
-            user.about.address = about.address;
-            user.about.email = about.email;
-            user.about.phoneNumber = about.phoneNumber;
-            user.about.freeLancing = about.freeLancing;
-            user.about.cvweblink = about.cvweblink;
-            user.about.cvfileLink = about.cvfileLink;
+            if(about.fullName) {
+                user.about.fullName = about.fullName;
+            }
+            if(about.dob) {
+                user.about.dob = about.dob;
+            }
+            if(about.address) {
+                user.about.address = about.address;
+            }
+            if(about.email) {
+                user.about.email = about.email;
+            }
+            if(about.phoneNumber) {
+                user.about.phoneNumber = about.phoneNumber;
+            }
+            if(about.freeLancing) {
+                user.about.freeLancing = about.freeLancing;
+            }
+            if(about.cvweblink) {
+                user.about.cvweblink = about.cvweblink;
+            }
+            if(about.cvfileLink) {
+                user.about.cvfileLink = about.cvfileLink;
+            }
 
             if (about.avatar) {
                 // deletes old image before uploading a new image
@@ -233,13 +249,13 @@ export const updateUser = async (req, res) => {
 
 export const addEducationTimeline = async (req, res) => {
     try {
-        const { title, description, date } = req.body;
+        const { title, description, startdate, enddate } = req.body;
 
         // finds firrst user with specified id
         const user = await User.findById(req.user._id);
 
         // educationTimeline
-        user.educationTimeline.unshift({ title, description, date });
+        user.educationTimeline.push({ title, description, startdate, enddate });
 
         await user.save();
 
@@ -253,11 +269,11 @@ export const addEducationTimeline = async (req, res) => {
 };
 export const addWorkTimeline = async (req, res) => {
     try {
-        const { title, description, date } = req.body;
+        const { title, description, startdate, enddate } = req.body;
 
         const user = await User.findById(req.user._id);
 
-        user.workTimeline.unshift({ title, description, date });
+        user.workTimeline.push({ title, description, startdate, enddate });
 
         await user.save();
 
@@ -275,7 +291,7 @@ export const addSkill = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        user.skills.unshift({ name });
+        user.skills.push({ name });
 
         await user.save();
 
@@ -293,7 +309,7 @@ export const addKnownLanguage = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        user.languagesKnown.unshift({ name });
+        user.languagesKnown.push({ name });
 
         await user.save();
 
@@ -318,10 +334,9 @@ export const addFrontEndProject = async (req, res) => {
             folder: "portfolio",
         });
 
-        user.frontendProjects.unshift({
+        user.frontendProjects.push({
             title,
             description,
-            date,
             gitLink,
             demoLink,
             image: {
@@ -350,10 +365,9 @@ export const addFullStackProject = async (req, res) => {
             folder: "portfolio",
         });
 
-        user.fullstackProjects.unshift({
+        user.fullstackProjects.push({
             title,
             description,
-            date,
             gitLink,
             demoLink,
             image: {
@@ -382,10 +396,9 @@ export const addBackEndProject = async (req, res) => {
             folder: "portfolio",
         });
 
-        user.backendProjects.unshift({
+        user.backendProjects.push({
             title,
             description,
-            date,
             gitLink,
             demoLink,
             image: {
@@ -415,7 +428,7 @@ export const deleteEducationTimeline = async (req, res) => {
         const user = await User.findById(req.user._id);
 
         // educationTimeline
-        const newEduTimeline = user.educationTimeline.filter((item) => item._id !== id);
+        const newEduTimeline = user.educationTimeline.filter((item) => item._id != id);
         user.educationTimeline = newEduTimeline;
 
         await user.save();
@@ -434,7 +447,7 @@ export const deleteWorkTimeline = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        const newWorkTimeline = user.workTimeline.filter((item) => item._id !== id);
+        const newWorkTimeline = user.workTimeline.filter((item) => item._id != id);
         user.workTimeline = newWorkTimeline;
 
         await user.save();
@@ -453,7 +466,7 @@ export const deleteSkill = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        const newskills = user.skills.filter((item) => item._id !== id);
+        const newskills = user.skills.filter((item) => item._id != id);
         user.skills = newskills;
 
         await user.save();
@@ -472,7 +485,7 @@ export const deleteKnownLanguage = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        const newKnownLan = user.languagesKnown.filter((item) => item._id !== id);
+        const newKnownLan = user.languagesKnown.filter((item) => item._id != id);
         user.languagesKnown = newKnownLan;
 
         await user.save();
@@ -495,11 +508,11 @@ export const deleteFrontEndProject = async (req, res) => {
         const user = await User.findById(req.user._id);
 
         // find project with id to delete image from cloudinary
-        const project = user.frontendProjects.filter((project) => project._id === id);
+        const project = user.frontendProjects.find((project) => project._id == id);
         await cloudinary.v2.uploader.destroy(project.image.public_id);
 
         // forntend projects
-        const newFrontEndProjects = user.frontendProjects.filter((project) => project._id !== id);
+        const newFrontEndProjects = user.frontendProjects.filter((project) => project._id != id);
         user.frontendProjects = newFrontEndProjects;
 
         await user.save();
@@ -518,10 +531,10 @@ export const deleteFullStackProject = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        const project = user.fullstackProjects.filter((project) => project._id === id);
+        const project = user.fullstackProjects.find((project) => project._id == id);
         await cloudinary.v2.uploader.destroy(project.image.public_id);
 
-        const newFullStackProjects = user.fullstackProjects.filter((project) => project._id !== id);
+        const newFullStackProjects = user.fullstackProjects.filter((project) => project._id != id);
         user.fullstackProjects = newFullStackProjects;
 
         await user.save();
@@ -540,10 +553,10 @@ export const deletebackEndProject = async (req, res) => {
 
         const user = await User.findById(req.user._id);
 
-        const project = user.backendProjects.filter((project) => project._id === id);
+        const project = user.backendProjects.find((project) => project._id == id);
         await cloudinary.v2.uploader.destroy(project.image.public_id);
 
-        const newBackendProjects = user.backendProjects.filter((project) => project._id !== id);
+        const newBackendProjects = user.backendProjects.filter((project) => project._id != id);
         user.backendProjects = newBackendProjects;
 
         await user.save();
