@@ -73,7 +73,8 @@ export const addFeedback = async (req, res) => {
     try {
         const { name, email, message } = req.body;
 
-        sendMail(name, email, message);
+        const data = await sendMail(name, email, message);
+        // console.log(data);
 
         // finds very first user
         const user = await User.findOne().select("-userName -password");
@@ -84,7 +85,7 @@ export const addFeedback = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Message sent Successfully",
+            message: "Feedback Recorded!",
         });
     } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
