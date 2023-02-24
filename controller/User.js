@@ -903,6 +903,67 @@ export const deleteSocialLink = async (req, res) => {
     }
 };
 
+
+export const editEducationTimeline = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, startdate, enddate } = req.body;
+        
+        const user = await User.findById(req.user._id);
+        
+        const itemToEdit = user.educationTimeline.filter((item) => item._id == id);
+
+        if(title) {
+            itemToEdit[0].title = title;
+        }
+        if(description) {
+            itemToEdit[0].description = description;
+        }
+        if(startdate) {
+            itemToEdit[0].startdate = startdate;
+        }
+        itemToEdit[0].enddate = enddate;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Education Timeline Updated Successfully",
+        });
+    } catch (error) {
+        return res.status(400).json({ success: false, message: error.message });
+    }
+};
+export const editWorkTimeline = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, startdate, enddate } = req.body;
+        
+        const user = await User.findById(req.user._id);
+        
+        const itemToEdit = user.workTimeline.filter((item) => item._id == id);
+
+        if(title) {
+            itemToEdit[0].title = title;
+        }
+        if(description) {
+            itemToEdit[0].description = description;
+        }
+        if(startdate) {
+            itemToEdit[0].startdate = startdate;
+        }
+        itemToEdit[0].enddate = enddate;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Work Timeline Updated Successfully",
+        });
+    } catch (error) {
+        return res.status(400).json({ success: false, message: error.message });
+    }
+};
 export const editKnownLanguage = async (req, res) => {
     try {
         const { id } = req.params;

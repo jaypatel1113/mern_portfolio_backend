@@ -18,8 +18,10 @@ import {
     deleteSkill,
     deleteSocialLink,
     deleteWorkTimeline,
+    editEducationTimeline,
     editKnownLanguage,
     editSkill,
+    editWorkTimeline,
     getUser,
     login,
     logout,
@@ -64,6 +66,8 @@ userRoute.route("/update/fullstack-project/delete/:id").delete(isAuthenticated, 
 userRoute.route("/update/backend-project/delete/:id").delete(isAuthenticated, deleteBackEndProject);
 userRoute.route("/update/social-link/delete/:id").delete(isAuthenticated, deleteSocialLink);
 
+userRoute.route("/update/education-timeline/edit/:id").put(isAuthenticated, editEducationTimeline);
+userRoute.route("/update/work-timeline/edit/:id").put(isAuthenticated, editWorkTimeline);
 userRoute.route("/update/known-language/edit/:id").put(isAuthenticated, editKnownLanguage);
 userRoute.route("/update/skill/edit/:id").put(isAuthenticated, editSkill);
 
