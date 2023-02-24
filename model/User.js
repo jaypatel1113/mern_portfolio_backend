@@ -13,7 +13,18 @@ const userSchema =  new mongoose.Schema({
         required: [true, "Please Enter Password"],
     },
 
-
+    home: {
+        detail: String,
+        quote: String,
+        banner_img: {
+            public_id: String,
+            url: String,
+        },
+        background: {
+            public_id: String,
+            url: String,
+        },
+    },
 
     about: {
         fullName: String,
@@ -23,7 +34,8 @@ const userSchema =  new mongoose.Schema({
         phoneNumber: String,
         freeLancing: String,
         cvweblink: String,
-        cvfileLink: String,
+        cvfileLinkLight: String,
+        cvfileLinkDark: String,
         avatar: {
             public_id: String,
             url: String,
@@ -94,7 +106,7 @@ const userSchema =  new mongoose.Schema({
     frontendProjects: [
         {
             title: String,
-            description: String,
+            techstack: String,
             image: {
                 public_id: String,
                 url: String,
@@ -106,7 +118,7 @@ const userSchema =  new mongoose.Schema({
     fullstackProjects: [
         {
             title: String,
-            description: String,
+            techstack: String,
             image: {
                 public_id: String,
                 url: String,
@@ -118,7 +130,7 @@ const userSchema =  new mongoose.Schema({
     backendProjects: [
         {
             title: String,
-            description: String,
+            techstack: String,
             image: {
                 public_id: String,
                 url: String,
@@ -127,6 +139,27 @@ const userSchema =  new mongoose.Schema({
             demoLink: String,
         }
     ],
+
+    socialLinks: [
+        {
+            name: String,
+            link: String,
+            color: String,
+            icon: {
+                public_id: String,
+                url: String,
+            },
+        }
+    ],
+
+    feedbacks: [
+        {
+            name: String, 
+            email: String, 
+            message: String,
+        },
+    ],
+
 });
 
 export const User = mongoose.model("User", userSchema);

@@ -2,24 +2,32 @@ import express from "express";
 import {
     addBackEndProject,
     addEducationTimeline,
+    addFeedback,
     addFrontEndProject,
     addFullStackProject,
     addKnownLanguage,
     addSkill,
+    addSocialLink,
     addWorkTimeline,
-    contact,
-    deletebackEndProject,
+    deleteBackEndProject,
     deleteEducationTimeline,
+    deleteFeedback,
     deleteFrontEndProject,
     deleteFullStackProject,
     deleteKnownLanguage,
     deleteSkill,
+    deleteSocialLink,
     deleteWorkTimeline,
+    editKnownLanguage,
+    editSkill,
     getUser,
     login,
     logout,
     myProfile,
-    updateUser,
+    updateAbout,
+    updateHome,
+    updateLoginDetails,
+    updateSkillImages,
 } from "../controller/User.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
@@ -33,8 +41,10 @@ userRoute.route("/user").get(getUser);
 
 userRoute.route("/me").get(isAuthenticated, myProfile);
 
-
-userRoute.route("/update-details").put(isAuthenticated, updateUser);
+userRoute.route("/update-login-details").put(isAuthenticated, updateLoginDetails);
+userRoute.route("/update-home-details").put(isAuthenticated, updateHome);
+userRoute.route("/update-about-details").put(isAuthenticated, updateAbout);
+userRoute.route("/update-skill-images").put(isAuthenticated, updateSkillImages);
 
 userRoute.route("/update/education-timeline/add").post(isAuthenticated, addEducationTimeline);
 userRoute.route("/update/work-timeline/add").post(isAuthenticated, addWorkTimeline);
@@ -43,6 +53,7 @@ userRoute.route("/update/known-language/add").post(isAuthenticated, addKnownLang
 userRoute.route("/update/frontend-project/add").post(isAuthenticated, addFrontEndProject);
 userRoute.route("/update/fullstack-project/add").post(isAuthenticated, addFullStackProject);
 userRoute.route("/update/backend-project/add").post(isAuthenticated, addBackEndProject);
+userRoute.route("/update/social-link/add").post(isAuthenticated, addSocialLink);
 
 userRoute.route("/update/education-timeline/delete/:id").delete(isAuthenticated, deleteEducationTimeline);
 userRoute.route("/update/work-timeline/delete/:id").delete(isAuthenticated, deleteWorkTimeline);
@@ -50,7 +61,11 @@ userRoute.route("/update/skills/delete/:id").delete(isAuthenticated, deleteSkill
 userRoute.route("/update/known-language/delete/:id").delete(isAuthenticated, deleteKnownLanguage);
 userRoute.route("/update/frontend-project/delete/:id").delete(isAuthenticated, deleteFrontEndProject);
 userRoute.route("/update/fullstack-project/delete/:id").delete(isAuthenticated, deleteFullStackProject);
-userRoute.route("/update/backend-project/delete/:id").delete(isAuthenticated, deletebackEndProject);
+userRoute.route("/update/backend-project/delete/:id").delete(isAuthenticated, deleteBackEndProject);
+userRoute.route("/update/social-link/delete/:id").delete(isAuthenticated, deleteSocialLink);
 
+userRoute.route("/update/known-language/edit/:id").put(isAuthenticated, editKnownLanguage);
+userRoute.route("/update/skill/edit/:id").put(isAuthenticated, editSkill);
 
-userRoute.route("/contact").post(contact);
+userRoute.route("/add/feedback").post(addFeedback);
+userRoute.route("/delete/feedback/:id").delete(deleteFeedback);
