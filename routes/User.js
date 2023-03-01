@@ -31,6 +31,7 @@ import {
     updateLoginDetails,
     updateSkillImages,
 } from "../controller/User.js";
+import { incCounter } from "../controller/Visitor.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
 export const userRoute = express.Router();
@@ -73,3 +74,6 @@ userRoute.route("/update/skill/edit/:id").put(isAuthenticated, editSkill);
 
 userRoute.route("/add/feedback").post(addFeedback);
 userRoute.route("/delete/feedback/:id").delete(deleteFeedback);
+
+
+userRoute.route("/inccount").get(incCounter);
