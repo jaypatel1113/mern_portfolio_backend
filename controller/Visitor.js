@@ -9,7 +9,7 @@ export const incCounter = async (req, res) => {
 
         const allVisitors = await AllVisitor.findOne({});
         if(!allVisitors) {
-            let newAllvisitor = new AllVisitor({
+            var newAllvisitor = new AllVisitor({
                 total: 1,
                 timestamp: [Date.now()],
             });
@@ -24,7 +24,12 @@ export const incCounter = async (req, res) => {
                 total: 1,
             });
             await newvisitor.save();
-            res.status(200).json({ success: true, message: "Welcome for the First Time", visitors: newvisitor, allVisitors});
+            res.status(200).json({
+                success: true,
+                message: "Welcome for the First Time",
+                visitors: newvisitor,
+                allVisitors: newAllvisitor,
+            });
         } else {
             visitor.total += 1;
             visitor.timestamp.unshift(Date.now());
@@ -33,7 +38,12 @@ export const incCounter = async (req, res) => {
             allVisitors.total += 1;
             allVisitors.timestamp.unshift(Date.now());
             await allVisitors.save();
-            res.status(200).json({ success: true, message: "Incremented by one", visitors: visitor, allVisitors});
+            res.status(200).json({
+                success: true,
+                message: "Incremented by one",
+                visitors: visitor,
+                allVisitors,
+            });
         }
 
     } catch (error) {
