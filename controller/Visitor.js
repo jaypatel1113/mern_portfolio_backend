@@ -24,7 +24,7 @@ export const incCounter = async (req, res) => {
                 total: 1,
             });
             await newvisitor.save();
-            res.status(200).json({ success: true, message: "Welcome for the First Time", newvisitor, allVisitors});
+            res.status(200).json({ success: true, message: "Welcome for the First Time", visitors: newvisitor, allVisitors});
         } else {
             visitor.total += 1;
             visitor.timestamp.unshift(Date.now());
@@ -33,7 +33,7 @@ export const incCounter = async (req, res) => {
             allVisitors.total += 1;
             allVisitors.timestamp.unshift(Date.now());
             await allVisitors.save();
-            res.status(200).json({ success: true, message: "Incremented by one", visitor, allVisitors});
+            res.status(200).json({ success: true, message: "Incremented by one", visitors: visitor, allVisitors});
         }
 
     } catch (error) {
