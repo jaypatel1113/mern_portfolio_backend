@@ -24,10 +24,16 @@ export const incCounter = async (req, res) => {
                 total: 1,
             });
             await newvisitor.save();
+            // console.log(newvisitor);
             res.status(200).json({
                 success: true,
                 message: "Welcome for the First Time",
-                visitors: newvisitor,
+                // visitors: newvisitor             it send ip also... so selected only require items
+                visitors: {
+                    total: newvisitor.total,
+                    timestamp: newvisitor.timestamp,
+                    _id: newvisitor._id
+                },
                 allVisitors: newAllvisitor,
             });
         } else {
