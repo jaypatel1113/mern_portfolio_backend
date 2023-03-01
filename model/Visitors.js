@@ -4,6 +4,7 @@ const visitorSchema = new mongoose.Schema({
     ip: {
         type: String,
         default: "0.0.0.0",
+        select: false,
     },
     total: {
         type: Number,
