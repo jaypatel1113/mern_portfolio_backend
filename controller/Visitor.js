@@ -14,6 +14,10 @@ export const incCounter = async (req, res) => {
                 timestamp: [Date.now()],
             });
             await newAllvisitor.save();
+        } else {
+            allVisitors.total += 1;
+            allVisitors.timestamp.unshift(Date.now());
+            await allVisitors.save();
         }
         
         const visitor = await Visitor.findOne({ ip: clientIp });
@@ -41,9 +45,6 @@ export const incCounter = async (req, res) => {
             visitor.timestamp.unshift(Date.now());
             await visitor.save();
             
-            allVisitors.total += 1;
-            allVisitors.timestamp.unshift(Date.now());
-            await allVisitors.save();
             res.status(200).json({
                 success: true,
                 message: "Incremented by one",
@@ -51,7 +52,6 @@ export const incCounter = async (req, res) => {
                 allVisitors,
             });
         }
-
     } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
     }
