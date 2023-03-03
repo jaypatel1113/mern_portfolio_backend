@@ -68,11 +68,15 @@ export const incCounter = async (req, res) => {
             //     allVisitors,
             // });
         }
+
+        const uniqueVisitorCount = await Visitor.countDocuments({});
+        
+            data = { ...data, uniqueVisitor: { total: uniqueVisitorCount } };
         // console.log(data);
         res.status(200).json({
             success: true,
             message: "Incremented by one",
-            vistorData: data
+            vistorData: data,
         });
     } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
