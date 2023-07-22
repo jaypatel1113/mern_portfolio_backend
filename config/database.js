@@ -7,6 +7,7 @@ export const connectDatabase = () => {
 
     mongoose
         .connect(process.env.MONGO_URI)
+        // .connect(process.env.DATABASE)
         .then((c) => {
             console.log(`connected to ${c.connection.host}`)
         })
